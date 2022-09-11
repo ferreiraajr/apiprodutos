@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: laravel/app
-    container_name: Basic_Api_Login_app
+    container_name: Api_Produtos_app
     tty: true
     environment:
       SERVICE_NAME: app
@@ -23,7 +23,7 @@ services:
   #Nginx Service
   webserver:
     image: nginx:stable-alpine
-    container_name: Api_Login_webserver
+    container_name: Api_Produtos_webserver
     tty: true
     ports:
       - "8000:80"
@@ -39,12 +39,12 @@ services:
 
   #Postgres Service
   postgres:
-    container_name: Api_Login_postgres
+    container_name: Api_Produtos_postgres
     image: postgres
     environment:
-      POSTGRES_DB: api_login
+      POSTGRES_DB: api_produtos
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: api@uema2022
+      POSTGRES_PASSWORD: 123456789
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -55,11 +55,11 @@ services:
 
   #PgAdmin
   pgadmin:
-    container_name: Api_Login_pgadmin
+    container_name: Api_Produtos_pgadmin
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: admindev@api.com
-      PGADMIN_DEFAULT_PASSWORD: admindev@api.com
+      PGADMIN_DEFAULT_PASSWORD: 123456789
     volumes:
       - pgadmin:/root/.pgadmin
     ports:
@@ -70,7 +70,7 @@ services:
     #composer
   composer:
     image: composer:latest
-    container_name: Api_Login_composer
+    container_name: Api_Produtos_composer
     volumes:
       - ./:/var/www/
     working_dir: /var/www/
@@ -82,7 +82,7 @@ services:
   #npm
   npm:
     image: node:13.7
-    container_name: Api_Login_npm
+    container_name: Api_Produtos_npm
     volumes:
       - ./:/var/www/
     working_dir: /var/www/
@@ -93,7 +93,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: Api_Login_artisan
+    container_name: Api_Produtos_artisan
     volumes:
       - ./:/var/www
     depends_on:
