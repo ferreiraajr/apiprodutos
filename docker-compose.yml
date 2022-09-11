@@ -1,0 +1,114 @@
+version: '3'
+services:
+
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravel/app
+    container_name: Basic_Api_Login_app
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker_config_files/php/local.ini:/usr/local/etc/php/conf.d/local.ini:delegated
+      - ~/.composer/docker-cache/:/root/.composer:cached
+    networks:
+      - app-network
+
+  #Nginx Service
+  webserver:
+    image: nginx:stable-alpine
+    container_name: Api_Login_webserver
+    tty: true
+    ports:
+      - "8000:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www:delegated
+      - ./docker_config_files/nginx/conf.d/:/etc/nginx/conf.d/:delegated
+    networks:
+      - app-network
+    depends_on:
+      - postgres
+      - app
+
+  #Postgres Service
+  postgres:
+    container_name: Api_Login_postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: api_login
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: api@uema2022
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  #PgAdmin
+  pgadmin:
+    container_name: Api_Login_pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admindev@api.com
+      PGADMIN_DEFAULT_PASSWORD: admindev@api.com
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+
+    #composer
+  composer:
+    image: composer:latest
+    container_name: Api_Login_composer
+    volumes:
+      - ./:/var/www/
+    working_dir: /var/www/
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  #npm
+  npm:
+    image: node:13.7
+    container_name: Api_Login_npm
+    volumes:
+      - ./:/var/www/
+    working_dir: /var/www/
+    entrypoint: ['npm']
+
+  #artisan
+  artisan:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Api_Login_artisan
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - postgres
+    working_dir: /var/www/
+    entrypoint: ['php', '/var/www/artisan']
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+#Volumes
+volumes:
+  postgres:
+  pgadmin:
