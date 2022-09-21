@@ -1,64 +1,71 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Api VueProdutos
 
-## About Laravel
+Api desenvolvida para estudos com Vuejs como frontend,
+nessa api ela retorna categorias, produtos, é possível cadastrar 
+novas categorias e novos produtos, editar, exibir e deletar. Além de ter um sistema de 
+login, onde só usuários logados tem permissão de cadastrar categorias e produtos.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Stack utilizada
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Front-end:** VueJs , Axios e Bootstrap - [VueProdutos](https://github.com/ferreira-jr/vueprodutos)
 
-## Learning Laravel
+**Back-end:** Laravel, Postgres e Docker
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configurações Iniciais
 
-## Laravel Sponsors
+Cria o container do docker
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```bash
+  docker-compose up -d
+```
+Atualiza e instala a dependecia do php via composer
 
-### Premium Partners
+```bash
+  docker-compose run --rm composer update
+  docker-compose run --rm composer install
+```
+Copia e cria o arquivo de configuracao do laravel 
+```bash
+  cp .env.example .env
+```
+Gera a chave do sistema
+```bash
+  docker-compose run --rm artisan key:generate
+```
+O arquivo .env deve ser configurado nesse momento para que o comando migrate funcione.
+É fundamental que a configuração esteja nesta ordem.
+e posteriormente os dados de acesso ao banco do sistema. O env.example já esta neste formato só
+aguardando os dados.
+## Acesso ao Banco Local
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+Para rodar esse projeto, você vai precisar configurar o seu .env
 
-## Contributing
+`DB_CONNECTION=pgsql`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+`DB_HOST=postgres`
 
-## Code of Conduct
+`DB_PORT=5432`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+`DB_DATABASE=api_produtos`
 
-## Security Vulnerabilities
+`DB_USERNAME=postgres`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`DB_PASSWORD=123456789`
 
-## License
+Cria as tabelas do banco de dados
+```bash
+  docker-compose run --rm artisan key:generate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Acesso ao PgAdmin
+- Email: admindev@api.com
+- Password: 123456789
+## Autores
+
+- [@ferreira-jr](https://github.com/ferreira-jr)
+
